@@ -32,12 +32,12 @@ CodeMirrorUI.prototype = {
         this.redoButtons = [];
         
         this.buttonDefs = {
-            'search': ["Search/Replace", "find_replace_window", "images/silk/find.png",this.find_replace_window],
-            'undo': ["Undo", "undo", "images/silk/arrow_undo.png",this.undo],
-            'redo': ["Redo", "redo", "images/silk/arrow_redo.png",this.redo],
-			'jump': ["Jump to line #","jump","images/silk/page_go.png",this.jump],
-			'reindentSelection': ["Reformat selection","reindentSelect","images/silk/text_indent.png",this.reindentSelection],
-			'reindent': ["Reformat whole document","reindent","images/silk/page_refresh.png",this.reindent]
+            'search': ["Search/Replace", "find_replace_window", this.options.path + "../images/silk/find.png",this.find_replace_window],
+            'undo': ["Undo", "undo", this.options.path + "../images/silk/arrow_undo.png",this.undo],
+            'redo': ["Redo", "redo", this.options.path + "../images/silk/arrow_redo.png",this.redo],
+			'jump': ["Jump to line #","jump",this.options.path + "../images/silk/page_go.png",this.jump],
+			'reindentSelection': ["Reformat selection","reindentSelect",this.options.path + "../images/silk/text_indent.png",this.reindentSelection],
+			'reindent': ["Reformat whole document","reindent",this.options.path + "../images/silk/page_refresh.png",this.reindent]
         };
         this.buttons = ['search', 'undo', 'redo','jump','reindentSelection','reindent'];
         
