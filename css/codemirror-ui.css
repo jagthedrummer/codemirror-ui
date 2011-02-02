@@ -1,3 +1,6 @@
+.codemirror-ui-button-frame{
+	/*border:1px solid #ccc;*/
+}
 .codemirror-ui-button{
 	display:block;
 	float:left;
@@ -30,5 +33,28 @@
 }
 
 iframe{
-	border:1px solid green !important;
+	/*border:1px solid green !important;*/
 }
+
+
+
+
+
+/*
+ * This lets us make sure that the fancy-tab-gutter will always enclose the tabs inside it.
+ * We're namspcing it since many frameworks include a .clearfix rule of somesort.
+ */
+
+.codemirror-ui-clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content:"\0020";
+     clear: both;
+     height: 0;
+     }
+.codemirror-ui-clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .codemirror-ui-clearfix { height: 1%; }
+.codemirror-ui-clearfix { display: block; }
+/* close commented backslash hack */

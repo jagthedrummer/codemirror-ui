@@ -47,6 +47,8 @@ CodeMirrorUI.prototype = {
             place(this.home);
         this.self = this;
 		
+		
+		
 		this.initButtons();
 		
 		mirrorOptions['onChange'] = this.editorChanged.bind(this);
@@ -57,6 +59,9 @@ CodeMirrorUI.prototype = {
     },
 	
 	initButtons : function(){
+		this.buttonFrame = document.createElement("div");
+		this.buttonFrame.className = "codemirror-ui-clearfix codemirror-ui-button-frame";
+		this.home.appendChild(this.buttonFrame);
 		for (var i = 0; i < this.buttons.length; i++) {
 	        var buttonId = this.buttons[i];
 	        var buttonDef = this.buttonDefs[buttonId];
@@ -104,7 +109,7 @@ CodeMirrorUI.prototype = {
         img.border = 0;
 		img.func = func.bind(this);
         button.appendChild(img);
-        this.home.appendChild(button);
+        this.buttonFrame.appendChild(button);
         if(action == 'undo'){ this.undoButtons.push(button) }
         if(action == 'redo'){ this.redoButtons.push(button) }
     },
