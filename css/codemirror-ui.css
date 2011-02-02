@@ -1,0 +1,31 @@
+.codemirror-ui-button{
+	display:block;
+	float:left;
+	padding:3px;
+	line-height:0;
+}
+
+.codemirror-ui-button:hover{
+	padding:2px;
+	border:1px solid #ccc;
+}
+
+.codemirror-ui-button img{
+	line-height:0;
+}
+
+
+.codemirror-find-replace{
+	border:1px solid black;
+	background : #ddd;
+	padding:10px;
+	position:absolute;
+	width:300px;
+	top:0%;
+	left:50%;
+	margin-left:-150px;
+}
+
+iframe{
+	border:1px solid green !important;
+}
