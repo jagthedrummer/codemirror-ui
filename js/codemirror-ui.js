@@ -22,7 +22,8 @@ function CodeMirrorUIOld(place, options, mirrorOptions){
 
 CodeMirrorUI.prototype = {
 
-    initialize: function(place, options, mirrorOptions){
+    initialize: function(textarea, options, mirrorOptions){
+		this.textarea = textarea
         this.options = options;
         //We need to keep a handle on the undo and redo buttons
         //since they will be frequently updated based on the state
@@ -40,11 +41,16 @@ CodeMirrorUI.prototype = {
         };
         this.buttons = ['search', 'undo', 'redo','jump','reindentSelection','reindent'];
         
-        this.home = document.createElement("div");
-        if (place.appendChild) 
+		
+		//place = CodeMirror.replace(place)
+        
+		this.home = document.createElement("div");
+        this.textarea.parentNode.insertBefore(this.home,this.textarea);
+		/*if (place.appendChild) 
             place.appendChild(this.home);
         else 
             place(this.home);
+            */
         this.self = this;
 		
 		
@@ -52,7 +58,7 @@ CodeMirrorUI.prototype = {
 		this.initButtons();
 		
 		mirrorOptions['onChange'] = this.editorChanged.bind(this);
-    	this.mirror = new CodeMirror(this.home, mirrorOptions);
+    	this.mirror = CodeMirror.fromTextArea(this.textarea, mirrorOptions);
 		//now trigger the undo/redo buttons 
 		this.addButtonsClass(this.undoButtons, 'inactive');
 		this.addButtonsClass(this.redoButtons, 'inactive');
