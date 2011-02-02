@@ -8,35 +8,36 @@
 	</head>
 	<body>
 		<h3>Find/Replace</h3>
-		<table>
-			<tr>
-				<td>Find</td>
-				<td><input id="find" type="text" value=""/></td>
-			</tr>
-			<tr>
-				<td>Replace</td>
-				<td><input id="replace" type="text" value=""/></td>
-			</tr>
-			<tr>
-				<td colspan="2">
-					<label>
-						<input type="radio" name="direction" value="forward" checked="checked"/>Forward
-					</label>
-					<label>
-						<input type="radio" name="direction" value="backward"/>Backward
-					</label>
-					<br/>
-					<label>
-						<input type="checkbox" name="wrap" value="true"/>Wrap Search
-					</label>
-					<br/>
-					<label>
-						<input type="checkbox" name="regex" value="true"/>Regex
-					</label>
-				</td>
-			</tr>
-		</table>
-		
+		<form name="findReplaceForm">
+			<table>
+				<tr>
+					<td>Find</td>
+					<td><input id="find" type="text" value=""/></td>
+				</tr>
+				<tr>
+					<td>Replace</td>
+					<td><input id="replace" type="text" value=""/></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<label>
+							<input type="radio" name="direction" value="forward" checked="checked"/>Forward
+						</label>
+						<label>
+							<input type="radio" name="direction" value="backward"/>Backward
+						</label>
+						<br/>
+						<label>
+							<input type="checkbox" id="wrap" value="true"/>Wrap Search
+						</label>
+						<br/>
+						<label>
+							<input type="checkbox" id="regex" value="true"/>Regex
+						</label>
+					</td>
+				</tr>
+			</table>
+		</form>
 		<table id="buttons">
 			<tr>
 				<td>
