@@ -64,6 +64,11 @@ CodeMirrorUI.prototype = {
 		this.addButtonsClass(this.redoButtons, 'inactive');
     },
 	
+	toTextArea : function(){
+		this.home.parentNode.removeChild(this.home);
+		this.mirror.toTextArea();
+	},
+	
 	initButtons : function(){
 		this.buttonFrame = document.createElement("div");
 		this.buttonFrame.className = "codemirror-ui-clearfix codemirror-ui-button-frame";
