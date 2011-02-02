@@ -14,6 +14,9 @@
 	line-height:0;
 }
 
+.codemirror-ui-button.inactive{
+	background:#ccc;
+}
 
 .codemirror-find-replace{
 	border:1px solid black;
