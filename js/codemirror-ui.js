@@ -118,7 +118,6 @@ CodeMirrorUI.prototype = {
 	},
 	
 	toggleWordWrap : function(){
-		console.log("toggling word wrap!");
 		if(this.wordWrap.checked){
 			this.mirror.setTextWrapping("nowrap");
 		}else{
