@@ -13,9 +13,11 @@
 </head>
 <body>
 
-	<h1>CodeMirror UI Demo Page</h1>
-	
-<textarea id="code" cols="120" rows="30"> 
+<h1>CodeMirror UI Demo Page</h1>
+<p>
+	This editor is enabled with the pop up find/replace widget.
+</p>
+<textarea id="code1" cols="120" rows="30"> 
 // Here you see some JavaScript code. Mess around with it to get
 // acquainted with CodeMirror's features.
  
@@ -41,14 +43,68 @@ function example(x) {
 }
 </textarea> 
 
+<hr/>
+<h2>Easily Configurable</h2>
+<p>
+	This editor is enabled with the inline 'quick search' widget.
+</p>
+<p>
+	The button for the popup search widget has been removed, 
+	along with the button for 'reindent selection'.
+</p>
+<textarea id="code2" cols="120" rows="30"> 
+// Here you see some JavaScript code. Mess around with it to get
+// acquainted with CodeMirror's features.
+ 
+// Press enter inside the object and your new line will be suitably
+// indented.
+var keyBindings = {
+  enter: "newline-and-indent",
+  tab: "reindent-selection",
+  ctrl_z: "undo",
+  ctrl_y: "redo",
+  ctrl_backspace: "undo-for-safari (which blocks ctrl-z)",
+  ctrl_bracket: "highlight-brackets",
+  ctrl_shift_bracket: "jump-to-matching-bracket"
+};
+ 
+// Press tab on the next line and the wrong indentation will be fixed.
+      var regex = /foo|bar/i;
+ 
+function example(x) {
+  // Local variables get a different colour than global ones.
+  var y = 44.4;
+  return x + y - z;
+}
+</textarea> 
 
 <script type="text/javascript"> 
-  var textarea = document.getElementById('code');
+  var textarea = document.getElementById('code1');
   //CodeMirror.replace(textarea);
   
   var editor = new CodeMirrorUI(textarea,
    {
-  	path : 'js/'
+  	path : 'js/',
+	quickSearch : false
+   },
+   {
+    height: "350px",
+    content: textarea.value,
+    parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
+    stylesheet: "lib/CodeMirror-0.93/css/jscolors.css",
+    path: "lib/CodeMirror-0.93/js/",
+    autoMatchParens: true
+  });
+  
+  
+  var textarea2 = document.getElementById('code2');
+  //CodeMirror.replace(textarea);
+  
+  var editor2 = new CodeMirrorUI(textarea2,
+   {
+  	path : 'js/',
+	quickSearch : true,
+	buttons : ['undo','redo','jump','reindent']
    },
    {
     height: "350px",
