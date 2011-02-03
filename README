@@ -1,6 +1,3 @@
 A user interface for CodeMirror.
 
-Goals:
-
-* Buttons for undo/redo
-* Search/replace interface w regex support
+Please see index.html for details.

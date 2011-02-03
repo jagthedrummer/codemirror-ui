@@ -66,6 +66,7 @@ iframe{
 .CodeMirror-wrapping{
 	border:1px solid #ccc;
 	border-top:0px;
+	background:white;
 }
 
 /*
