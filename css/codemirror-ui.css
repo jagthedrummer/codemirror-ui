@@ -21,6 +21,10 @@
 	background:#ccc;
 }
 
+.codemirror-ui-wrap-label{
+	float:right;
+}
+
 .codemirror-find-replace{
 	border:1px solid black;
 	background : #ddd;

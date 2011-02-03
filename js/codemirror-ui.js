@@ -56,6 +56,7 @@ CodeMirrorUI.prototype = {
 		
 		
 		this.initButtons();
+		this.initWordWrapControl();
 		
 		mirrorOptions['onChange'] = this.editorChanged.bind(this);
     	this.mirror = CodeMirror.fromTextArea(this.textarea, mirrorOptions);
@@ -92,6 +93,7 @@ CodeMirrorUI.prototype = {
 	 * This is left over from the MirrorFrame demo.
 	 * Get rid of it quick.
 	 */
+	/*
     makeButton : function(name, action){
         var button = document.createElement("input");
         button.type = "button";
@@ -101,6 +103,28 @@ CodeMirrorUI.prototype = {
             self[action].call(self);
         };
     },
+	*/
+	
+	initWordWrapControl : function(){
+		var label = document.createElement("label");
+		label.className = "codemirror-ui-wrap-label"
+		this.wordWrap = document.createElement("input");
+		this.wordWrap.type = "checkbox"
+		this.wordWrap.checked = true;
+		label.appendChild(this.wordWrap);
+		label.appendChild(document.createTextNode("Word Wrap"));
+		this.wordWrap.onchange = this.toggleWordWrap.bind(this);
+		this.buttonFrame.appendChild(label);
+	},
+	
+	toggleWordWrap : function(){
+		console.log("toggling word wrap!");
+		if(this.wordWrap.checked){
+			this.mirror.setTextWrapping("nowrap");
+		}else{
+			this.mirror.setTextWrapping("");
+		}
+	},
 	
 	
 	addButton : function(name, action, image,func){
