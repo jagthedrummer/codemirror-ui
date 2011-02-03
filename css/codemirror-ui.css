@@ -1,14 +1,23 @@
 .codemirror-ui-button-frame{
-	/*border:1px solid #ccc;*/
-	
+	border:1px solid #ccc;
+	background:#eee;
 }
 
 .codemirror-ui-button-frame input,.codemirror-ui-button-frame label{
-	font-size:0.75em;
+	font-size:0.7em;
+	line-height:0;
 }
 
+.codemirror-ui-button-frame label input{
+	margin:0px 2px;
+	margin-top:-4px;
+	vertical-align:middle;
+}
 .codemirror-ui-button-frame label{
-	padding:2px;
+	padding:0px;
+        margin:2px 5px;
+		vertical-align:middle;
+		
 }
 
 .codemirror-ui-button{
@@ -31,7 +40,7 @@
 	background:#ccc;
 }
 
-.codemirror-ui-wrap-label{
+.codemirror-ui-wrap{
 	float:right;
 }
 
@@ -54,7 +63,11 @@ iframe{
 	text-align:center;
 }
 
-
+.CodeMirror-wrapping{
+	border:1px solid #ccc;
+	border-top:0px;
+	background:white;
+}
 
 /*
  * This lets us make sure that the fancy-tab-gutter will always enclose the tabs inside it.
