@@ -198,15 +198,19 @@ CodeMirrorUI.prototype = {
 	},
 	
 	initWordWrapControl : function(){
+		var wrapDiv = document.createElement("div");
+		wrapDiv.className = "codemirror-ui-wrap"
+		
 		var label = document.createElement("label");
-		label.className = "codemirror-ui-wrap-label"
+		
 		this.wordWrap = document.createElement("input");
 		this.wordWrap.type = "checkbox"
 		this.wordWrap.checked = true;
 		label.appendChild(this.wordWrap);
 		label.appendChild(document.createTextNode("Word Wrap"));
 		this.wordWrap.onchange = this.toggleWordWrap.bind(this);
-		this.buttonFrame.appendChild(label);
+		wrapDiv.appendChild(label);
+		this.buttonFrame.appendChild(wrapDiv);
 	},
 	
 	
