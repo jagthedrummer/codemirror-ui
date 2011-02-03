@@ -8,23 +8,18 @@ function CodeMirrorUI(place, options, mirrorOptions){
 	this.initialize(place, options, mirrorOptions);
 }
 
-function CodeMirrorUIOld(place, options, mirrorOptions){
-
-    
-    
-    
-    
-    
-    
-    
-    
-}
 
 CodeMirrorUI.prototype = {
 
     initialize: function(textarea, options, mirrorOptions){
+		var defaultOptions = {
+			quickSearch : false,
+			path : 'js',
+			buttons : ['search', 'undo', 'redo','jump','reindentSelection','reindent']
+		}
 		this.textarea = textarea
         this.options = options;
+		this.setDefaults(this.options,defaultOptions);
         //We need to keep a handle on the undo and redo buttons
         //since they will be frequently updated based on the state
         //of the mirror.historySize() object.
@@ -39,7 +34,7 @@ CodeMirrorUI.prototype = {
 			'reindentSelection': ["Reformat selection","reindentSelect",this.options.path + "../images/silk/text_indent.png",this.reindentSelection],
 			'reindent': ["Reformat whole document","reindent",this.options.path + "../images/silk/page_refresh.png",this.reindent]
         };
-        this.buttons = ['search', 'undo', 'redo','jump','reindentSelection','reindent'];
+        
         
 		
 		//place = CodeMirror.replace(place)
@@ -58,12 +53,23 @@ CodeMirrorUI.prototype = {
 		this.initButtons();
 		this.initWordWrapControl();
 		
+		if(this.options.quickSearch){
+			this.initFindControl();
+		}
+		
 		mirrorOptions['onChange'] = this.editorChanged.bind(this);
     	this.mirror = CodeMirror.fromTextArea(this.textarea, mirrorOptions);
 		//now trigger the undo/redo buttons 
 		this.addButtonsClass(this.undoButtons, 'inactive');
 		this.addButtonsClass(this.redoButtons, 'inactive');
     },
+	
+	setDefaults : function(object, defaults) {
+    	for (var option in defaults) {
+      		if (!object.hasOwnProperty(option))
+        		object[option] = defaults[option];
+    		}
+  	},
 	
 	toTextArea : function(){
 		this.home.parentNode.removeChild(this.home);
@@ -74,8 +80,8 @@ CodeMirrorUI.prototype = {
 		this.buttonFrame = document.createElement("div");
 		this.buttonFrame.className = "codemirror-ui-clearfix codemirror-ui-button-frame";
 		this.home.appendChild(this.buttonFrame);
-		for (var i = 0; i < this.buttons.length; i++) {
-	        var buttonId = this.buttons[i];
+		for (var i = 0; i < this.options.buttons.length; i++) {
+	        var buttonId = this.options.buttons[i];
 	        var buttonDef = this.buttonDefs[buttonId];
 	        this.addButton(buttonDef[0], buttonDef[1], buttonDef[2], buttonDef[3]);
 	    }
@@ -105,6 +111,92 @@ CodeMirrorUI.prototype = {
     },
 	*/
 	
+	initFindControl : function(){
+		var findBar = document.createElement("div");
+		findBar.className = "codemirror-ui-find-bar";
+		
+		this.findString = document.createElement("input");
+		this.findString.type = "text";
+		this.findString.size = 8;
+		
+		this.findButton = document.createElement("input");
+		this.findButton.type = "button";
+		this.findButton.value = "Find";
+		this.findButton.onclick = this.find.bind(this);
+		
+		
+		var regLabel = document.createElement("label");
+		this.regex = document.createElement("input");
+		this.regex.type = "checkbox"
+		regLabel.appendChild(this.regex);
+		regLabel.appendChild(document.createTextNode("RegEx"));
+		
+		
+		this.replaceString = document.createElement("input");
+		this.replaceString.type = "text";
+		this.replaceString.size = 8;
+		
+		this.replaceButton = document.createElement("input");
+		this.replaceButton.type = "button";
+		this.replaceButton.value = "Replace";
+		this.replaceButton.onclick = this.replace.bind(this);
+		
+		var replaceAllLabel = document.createElement("label");
+		this.replaceAll = document.createElement("input");
+		this.replaceAll.type = "checkbox"
+		replaceAllLabel.appendChild(this.replaceAll);
+		replaceAllLabel.appendChild(document.createTextNode("All"));
+		
+		findBar.appendChild(this.findString);
+		findBar.appendChild(this.findButton);
+		findBar.appendChild(regLabel);
+		
+		
+		findBar.appendChild(this.replaceString);
+		findBar.appendChild(this.replaceButton);
+		findBar.appendChild(replaceAllLabel);
+		
+		this.buttonFrame.appendChild(findBar);
+	},
+	
+	
+	find : function(){
+		var findString = this.findString.value;
+		if (findString == null || findString == '') {
+	        alert('You must enter something to search for.');
+	        return;
+	    }
+		if(this.regex.checked){
+			findString = new RegExp(findString);
+		}
+		this.cursor = this.mirror.getSearchCursor(findString, true);
+    	var found = this.cursor.findNext();
+		if(found){
+			this.cursor.select();
+		}else{
+			if(confirm("No more matches.  Should we start from the top?")){
+				this.cursor = this.mirror.getSearchCursor(findString, false);
+    			found = this.cursor.findNext();
+				if(found){
+					this.cursor.select();
+				}else{
+					alert("No matches found.");
+				}
+			}
+		}
+	},
+	
+	replace : function(){
+		if(this.replaceAll.checked){
+			var cursor = this.mirror.getSearchCursor(this.findString.value, false);
+		    while (cursor.findNext())
+		      cursor.replace(this.replaceString.value);
+		}else{
+			this.cursor.replace(this.replaceString.value);
+			this.find();
+		}
+	},
+	
 	initWordWrapControl : function(){
 		var label = document.createElement("label");
 		label.className = "codemirror-ui-wrap-label"
@@ -116,6 +208,8 @@ CodeMirrorUI.prototype = {
 		this.wordWrap.onchange = this.toggleWordWrap.bind(this);
 		this.buttonFrame.appendChild(label);
 	},
+	
+	
 	
 	toggleWordWrap : function(){
 		if(this.wordWrap.checked){

@@ -1,6 +1,16 @@
 .codemirror-ui-button-frame{
 	/*border:1px solid #ccc;*/
+	
 }
+
+.codemirror-ui-button-frame input,.codemirror-ui-button-frame label{
+	font-size:0.75em;
+}
+
+.codemirror-ui-button-frame label{
+	padding:2px;
+}
+
 .codemirror-ui-button{
 	display:block;
 	float:left;
@@ -40,7 +50,9 @@ iframe{
 	/*border:1px solid green !important;*/
 }
 
-
+.codemirror-ui-find-bar{
+	text-align:center;
+}
 
 
 

@@ -7,6 +7,7 @@ function setupFindReplace(){
     document.getElementById('closeButton').onclick = closeWindow;
     document.getElementById('findButton').onclick = find;
     document.getElementById('replaceButton').onclick = replace;
+	document.getElementById('replaceAllButton').onclick = replaceAll;
     document.getElementById('replaceFindButton').onclick = replaceFind;
 }
 
@@ -65,6 +66,13 @@ function getFindDirection(){
     
     return 'no-value?';
     
+}
+
+
+function replaceAll(){
+	var cursor = codeMirrorUI.mirror.getSearchCursor(document.getElementById('find').value, false);
+    while (cursor.findNext())
+      cursor.replace(document.getElementById('replace').value);
 }
 
 
