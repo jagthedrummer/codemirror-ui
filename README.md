@@ -8,6 +8,12 @@ ComeMirrorUI is a wrapper that adds interface functionality for many functions t
 Functionality includes undo, redo, jump to line, reindent selection, and reindent entire document. 
 Two options for find/replace are also available.  It is based on the MirrorFrame example that Marijn included with CodeMirror.
 
+Demo
+-------------------
+
+[http://www.octolabs.com/javascripts/codemirror-ui/index.html](http://www.octolabs.com/javascripts/codemirror-ui/index.html)
+
+
 Easily Configurable
 --------------------
 

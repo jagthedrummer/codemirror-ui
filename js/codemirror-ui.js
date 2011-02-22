@@ -128,6 +128,7 @@ CodeMirrorUI.prototype = {
 		var regLabel = document.createElement("label");
 		this.regex = document.createElement("input");
 		this.regex.type = "checkbox"
+		this.regex.className = "codemirror-ui-checkbox"
 		regLabel.appendChild(this.regex);
 		regLabel.appendChild(document.createTextNode("RegEx"));
 		
@@ -144,6 +145,7 @@ CodeMirrorUI.prototype = {
 		var replaceAllLabel = document.createElement("label");
 		this.replaceAll = document.createElement("input");
 		this.replaceAll.type = "checkbox"
+		this.replaceAll.className = "codemirror-ui-checkbox"
 		replaceAllLabel.appendChild(this.replaceAll);
 		replaceAllLabel.appendChild(document.createTextNode("All"));
 		
@@ -233,6 +235,7 @@ CodeMirrorUI.prototype = {
         button.onclick = function(event){
 			//alert(event.target);
             event.target.func();
+			return false;
 			//this.self[action].call(this);
         	//eval("this."+action)();
 		}.bind(this,func);
