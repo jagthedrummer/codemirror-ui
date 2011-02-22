@@ -5,7 +5,6 @@
 
 .codemirror-ui-button-frame input,.codemirror-ui-button-frame label{
 	font-size:0.6em;
-	line-height:0;
 }
 
 .codemirror-ui-button-frame label input{
