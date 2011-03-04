@@ -13,7 +13,7 @@ CodeMirrorUI.prototype = {
 
     initialize: function(textarea, options, mirrorOptions){
 		var defaultOptions = {
-			quickSearch : false,
+			searchMode : 'dialog',
 			path : 'js',
 			buttons : ['search', 'undo', 'redo','jump','reindentSelection','reindent']
 		}
@@ -27,7 +27,9 @@ CodeMirrorUI.prototype = {
         this.redoButtons = [];
         
         this.buttonDefs = {
-            'search': ["Search/Replace", "find_replace_window", this.options.path + "../images/silk/find.png",this.find_replace_window],
+            'search': ["Search/Replace", "find_replace_popup", this.options.path + "../images/silk/find.png",this.find_replace_popup],
+			'searchClose': ["Close", "find_replace_popup_close", this.options.path + "../images/silk/cancel.png",this.find_replace_popup_close],
+			'searchDialog': ["Search/Replace", "find_replace_window", this.options.path + "../images/silk/find.png",this.find_replace_window],
             'undo': ["Undo", "undo", this.options.path + "../images/silk/arrow_undo.png",this.undo],
             'redo': ["Redo", "redo", this.options.path + "../images/silk/arrow_redo.png",this.redo],
 			'jump': ["Jump to line #","jump",this.options.path + "../images/silk/page_go.png",this.jump],
@@ -53,8 +55,10 @@ CodeMirrorUI.prototype = {
 		this.initButtons();
 		this.initWordWrapControl();
 		
-		if(this.options.quickSearch){
+		if (this.options.searchMode == 'inline') {
 			this.initFindControl();
+		}else if (this.options.searchMode == 'popup') {
+			this.initPopupFindControl();
 		}
 		
 		mirrorOptions['onChange'] = this.editorChanged.bind(this);
@@ -83,7 +87,7 @@ CodeMirrorUI.prototype = {
 		for (var i = 0; i < this.options.buttons.length; i++) {
 	        var buttonId = this.options.buttons[i];
 	        var buttonDef = this.buttonDefs[buttonId];
-	        this.addButton(buttonDef[0], buttonDef[1], buttonDef[2], buttonDef[3]);
+	        this.addButton(buttonDef[0], buttonDef[1], buttonDef[2], buttonDef[3],this.buttonFrame);
 	    }
 	    
 	    
@@ -111,7 +115,7 @@ CodeMirrorUI.prototype = {
     },
 	*/
 	
-	initFindControl : function(){
+	createFindBar : function(){
 		var findBar = document.createElement("div");
 		findBar.className = "codemirror-ui-find-bar";
 		
@@ -157,7 +161,28 @@ CodeMirrorUI.prototype = {
 		findBar.appendChild(this.replaceString);
 		findBar.appendChild(this.replaceButton);
 		findBar.appendChild(replaceAllLabel);
+		return findBar;
+	},
+	
+	initPopupFindControl : function(){
+		var findBar = this.createFindBar();
 		
+		this.popupFindWrap = document.createElement("div");
+		this.popupFindWrap.className = "codemirror-ui-popup-find-wrap";
+		
+		this.popupFindWrap.appendChild(findBar);
+		
+		var buttonDef = this.buttonDefs['searchClose'];
+	    this.addButton(buttonDef[0], buttonDef[1], buttonDef[2], buttonDef[3],this.popupFindWrap);
+		
+		
+		this.buttonFrame.appendChild(this.popupFindWrap);
+		
+		
+	},
+	
+	initFindControl : function(){
+		var findBar = this.createFindBar();
 		this.buttonFrame.appendChild(findBar);
 	},
 	
@@ -226,7 +251,7 @@ CodeMirrorUI.prototype = {
 	},
 	
 	
-	addButton : function(name, action, image,func){
+	addButton : function(name, action, image,func,frame){
         var button = document.createElement("a");
         button.href = "#";
         button.className = "codemirror-ui-button " + action;
@@ -244,7 +269,7 @@ CodeMirrorUI.prototype = {
         img.border = 0;
 		img.func = func.bind(this);
         button.appendChild(img);
-        this.buttonFrame.appendChild(button);
+        frame.appendChild(button);
         if(action == 'undo'){ this.undoButtons.push(button) }
         if(action == 'redo'){ this.redoButtons.push(button) }
     },
@@ -319,6 +344,16 @@ CodeMirrorUI.prototype = {
         }
         this.searchWindow.focus();
     },
+	
+	find_replace_popup : function(){
+		//alert('Hello!');
+		this.popupFindWrap.className = "codemirror-ui-popup-find-wrap active";
+	},
+	
+	find_replace_popup_close : function(){
+		//alert('Hello!');
+		this.popupFindWrap.className = "codemirror-ui-popup-find-wrap";
+	},
     
 	/*
     find_replace: function(){

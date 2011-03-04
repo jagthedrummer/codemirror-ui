@@ -96,7 +96,7 @@
 	<pre>
 //first set up some variables
 var textarea = document.getElementById('code1');
-var uiOptions = { path : 'js/', quickSearch : false }
+var uiOptions = { path : 'js/', searchMode : 'popup' }
 var codeMirrorOptions = {
     height: "250px",
     content: textarea.value,
@@ -126,7 +126,7 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 					path - String - The path to the codemirror-ui js directory (relative to the current document). 
 				</li>
 				<li>
-					quickSearch - boolean - Whether or not to include the 'quick search' bar.  
+					searchMode - String - Options are 'inline', 'popup', or 'dialog'  
 				</li>
 				<li>
 					buttons - Array - An array of button names that should be included in the button bar.
@@ -160,7 +160,7 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 	<h2>Another example</h2>
 	
 	<p>
-		This editor is enabled with the inline 'quick search' widget.
+		This editor is enabled with the 'inline' search widget.
 	</p>
 	<p>
 		The button for the popup search widget has been removed, 
@@ -200,7 +200,7 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 <pre>
 var uiOptions = {
 	path : 'js/',
-	quickSearch : true,
+	searchMode = 'inline',
 	buttons : ['undo','redo','jump','reindent']
 }
 </pre>
@@ -230,7 +230,7 @@ var uiOptions = {
   var editor = new CodeMirrorUI(textarea,
    {
   	path : 'js/',
-	quickSearch : false
+	searchMode : 'popup'
    },
    {
     height: "250px",
@@ -248,7 +248,7 @@ var uiOptions = {
   var editor2 = new CodeMirrorUI(textarea2,
    {
   	path : 'js/',
-	quickSearch : true,
+	searchMode : 'inline',
 	buttons : ['undo','redo','jump','reindent']
    },
    {
