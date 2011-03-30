@@ -65,7 +65,10 @@ CodeMirrorUI.prototype = {
             }
         
         mirrorOptions['onChange'] = this.editorChanged.bind(this);
-        this.mirror = CodeMirror.fromTextArea(this.textarea, mirrorOptions);
+        
+        mir = CodeMirror.fromTextArea(this.textarea, mirrorOptions);
+        console.log(mir);
+        this.mirror = mir;
         //now trigger the undo/redo buttons 
         this.addButtonsClass(this.undoButtons, 'inactive');
         this.addButtonsClass(this.redoButtons, 'inactive');
@@ -313,6 +316,7 @@ CodeMirrorUI.prototype = {
     },
     
     editorChanged: function(){
+        if(!this.mirror){return}
         var his = this.mirror.historySize();
         if (his['undo'] > 0) {
             this.removeButtonsClass(this.undoButtons, 'inactive');
@@ -425,7 +429,10 @@ CodeMirrorUI.prototype = {
      },
      */
     reindent: function(){
-        this.mirror.reindent();
+      var lineCount = this.mirror.lineCount();
+      for(var line = 0; line < lineCount; line++){
+        this.mirror.indentLine(line);
+      }
     },
 	
 	about : function(){
