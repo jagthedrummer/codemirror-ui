@@ -93,7 +93,7 @@ iframe{
 	float:left;
 }
 
-.CodeMirror-wrapping{
+.CodeMirror{
 	border:1px solid #ccc;
 	border-top:0px;
 	background:white;
