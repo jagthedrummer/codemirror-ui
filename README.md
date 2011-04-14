@@ -19,15 +19,15 @@ Easily Configurable
 
 It's easy to configure an editor with something like this:
 
-		//first set up some variables
-		var textarea = document.getElementById('code1');
-		var uiOptions = { path : 'js/', searchMode: 'popup' }
-		var codeMirrorOptions = {
-		    mode: "javascript" // all your normal CodeMirror options go here
-		}
-		
-		//then create the editor
-		var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);
+    //first set up some variables
+    var textarea = document.getElementById('code1');
+    var uiOptions = { path : 'js/', searchMode: 'popup' }
+    var codeMirrorOptions = {
+        mode: "javascript" // all your normal CodeMirror options go here
+    }
+    
+    //then create the editor
+    var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);
 			
 Installation
 --------------------
