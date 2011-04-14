@@ -21,14 +21,9 @@ It's easy to configure an editor with something like this:
 
 		//first set up some variables
 		var textarea = document.getElementById('code1');
-		var uiOptions = { path : 'js/', quickSearch : false }
+		var uiOptions = { path : 'js/', searchMode: 'popup' }
 		var codeMirrorOptions = {
-		    height: "250px",
-		    content: textarea.value,
-		    parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
-		    stylesheet: "lib/CodeMirror-0.93/css/jscolors.css",
-		    path: "lib/CodeMirror-0.93/js/",
-		    autoMatchParens: true
+		    mode: "javascript" // all your normal CodeMirror options go here
 		}
 		
 		//then create the editor
@@ -37,9 +32,15 @@ It's easy to configure an editor with something like this:
 Installation
 --------------------
 
-		<script src="lib/CodeMirror-0.93/js/codemirror.js" type="text/javascript"></script>
+		// First the CodeMirror stuff
+		<script src="lib/CodeMirror-2.0/lib/codemirror.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="lib/CodeMirror-2.0/lib/codemirror.css">
+    <script src="lib/CodeMirror-2.0/mode/javascript/javascript.js"></script>
+    <link rel="stylesheet" href="lib/CodeMirror-2.0/mode/javascript/javascript.css">
+		
+		//Then the CodeMirrorUI stuff
 		<script src="js/codemirror-ui.js" type="text/javascript"></script>
-		<link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" />
 
 You'll probably need to adjust the paths to fit your situation.
 

@@ -177,9 +177,16 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 	</p>
 	
 <pre class="code">
-&lt;script src="lib/CodeMirror-2.0/js/codemirror.js" type="text/javascript"&gt;&lt;/script&gt;
+// First the CodeMirror stuff
+&lt;script src="lib/CodeMirror-2.0/lib/codemirror.js" type="text/javascript"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="lib/CodeMirror-2.0/lib/codemirror.css"&gt;
+&lt;script src="lib/CodeMirror-2.0/mode/javascript/javascript.js"&gt;&lt;/script&gt;
+&lt;link rel="stylesheet" href="lib/CodeMirror-2.0/mode/javascript/javascript.css"&gt;
+
+//Then the CodeMirrorUI stuff
 &lt;script src="js/codemirror-ui.js" type="text/javascript"&gt;&lt;/script&gt;
-&lt;link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" /&gt;</pre>
+&lt;link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" /&gt;
+</pre>
 	
 	<p>
 		From there you can create an editor as shown above.  It is especially easy to replace any calls to
