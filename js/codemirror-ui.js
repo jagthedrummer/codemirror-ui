@@ -361,6 +361,7 @@ CodeMirrorUI.prototype = {
   find_replace_popup: function() {
     //alert('Hello!');
     this.popupFindWrap.className = "codemirror-ui-popup-find-wrap active";
+    this.findString.focus();
   },
   find_replace_popup_close: function() {
     //alert('Hello!');
