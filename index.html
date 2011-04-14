@@ -13,7 +13,7 @@
 	
 	<script src="js/codemirror-ui.js" type="text/javascript"></script>
 	<link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" />
-	<!--
+	
 	<style type="text/css">
 		body{
 			background:#0d4664;
@@ -36,11 +36,11 @@
 			box-shadow: 3px 3px 14px #000;
 		}
 		
-		/*pre{
+		pre{
 			border:1px solid #ccc;
 			background:#eee;
 			padding:10px;
-		}*/
+		}
 		
 		#footer{
 			font-size:0.9em;
@@ -50,7 +50,7 @@
 			color:white;
 		}
 	</style>
-	-->
+	
 	
 </head>
 <body>
@@ -65,10 +65,11 @@
 		ComeMirrorUI is a wrapper that adds interface functionality for many functions that are already built into CodeMirror itself.
 		Functionality includes undo, redo, jump to line, reindent selection, and reindent entire document. 
 		Two options for find/replace are also available.  It is based on the MirrorFrame example that Marijn included with CodeMirror.
+	</p>
 	<p>
 		This editor is enabled with the pop up find/replace widget.
 	</p>
-	
+	<!--
 	<textarea id="code0" cols="120" rows="20"> 
   // Here you see some JavaScript code. Mess around with it to get
   // acquainted with CodeMirror's features.
@@ -94,7 +95,7 @@
     return x + y - z;
   }
   </textarea> 
-
+  -->
 	
 	<textarea id="code1" cols="120" rows="20"> 
 	// Here you see some JavaScript code. Mess around with it to get
@@ -132,14 +133,7 @@
 //first set up some variables
 var textarea = document.getElementById('code1');
 var uiOptions = { path : 'js/', searchMode : 'popup' }
-var codeMirrorOptions = {
-    height: "250px",
-    content: textarea.value,
-    parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
-    stylesheet: "lib/CodeMirror-2.0/css/jscolors.css",
-    path: "lib/CodeMirror-2.0/js/",
-    autoMatchParens: true
-}
+var codeMirrorOptions = { mode: "javascript" }
 
 //then create the editor
 var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
@@ -161,7 +155,7 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 					path - String - The path to the codemirror-ui js directory (relative to the current document). 
 				</li>
 				<li>
-					searchMode - String - Options are 'inline', 'popup', or 'dialog'  
+					searchMode - String - Options are 'inline' or 'popup' 
 				</li>
 				<li>
 					buttons - Array - An array of button names that should be included in the button bar.
@@ -182,7 +176,7 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 		Then include a link to the stylesheet and javascript files in your document. Something like this:
 	</p>
 	
-<pre>
+<pre class="code">
 &lt;script src="lib/CodeMirror-2.0/js/codemirror.js" type="text/javascript"&gt;&lt;/script&gt;
 &lt;script src="js/codemirror-ui.js" type="text/javascript"&gt;&lt;/script&gt;
 &lt;link rel="stylesheet" href="css/codemirror-ui.css" type="text/css" media="screen" /&gt;</pre>
@@ -232,7 +226,7 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 	</p>
 
 
-<pre>
+<pre class="code">
 var uiOptions = {
 	path : 'js/',
 	searchMode = 'inline',
@@ -244,12 +238,6 @@ var uiOptions = {
 		View the source of this page to see the actual code used to get these editors in action.
 	</p>
 
-	<h2>Known Issues</h2>
-
-	<p>
-		Some browsers (at least Google Chrome) don't allow windows launched from a document hosted at a file:// URL to communicate with each other.
-		The pop up find/replace widget will seem to be broken if you're viewing this page (or any page with CodeMirrorUI) directly from your local disk.
-	</p>
 	
 	<h2>Find the code @ Github</h2>
 	<a href="https://github.com/jagthedrummer/codemirror-ui">https://github.com/jagthedrummer/codemirror-ui</a>
@@ -262,7 +250,17 @@ var uiOptions = {
 	</p>
 	
 	<h3><a href="http://www.famfamfam.com/lab/icons/silk/">Mark James - Silk Icons</a></h3>
+	<p>
 	I used the Silk icon set from Mark James of <a href="http://www.famfamfam.com/">famfamfam.com</a> fame.  
+  </p>
+  
+  <h2>Versions</h2>
+  <p>
+    All version up to and including 0.0.7 are based on CodeMirror 1.
+  </p>
+  <p>
+    Versions 0.0.8 and newer are based on CodeMirror 2.  
+  </p>
 </div>
 
 
@@ -275,10 +273,10 @@ var uiOptions = {
 
 <script type="text/javascript"> 
 
+  /*
   var textarea = document.getElementById('code0');
-
   var myCodeMirror = CodeMirror.fromTextArea(textarea, {mode: "javascript"} );
-
+  */
 
   var textarea = document.getElementById('code1');
   var editor = new CodeMirrorUI(textarea,
@@ -290,25 +288,20 @@ var uiOptions = {
     mode: "javascript"
   });
   
-/*  
+
   var textarea2 = document.getElementById('code2');
   //CodeMirror.replace(textarea);
   
   var editor2 = new CodeMirrorUI(textarea2,
    {
   	path : 'js/',
-	searchMode : 'inline',
-	buttons : ['undo','redo','jump','reindent','about']
+	  searchMode : 'inline',
+	  buttons : ['undo','redo','jump','reindent','about']
    },
    {
-    height: "250px",
-    content: textarea.value,
-    parserfile: ["tokenizejavascript.js", "parsejavascript.js"],
-    stylesheet: "lib/CodeMirror-2.0/css/jscolors.css",
-    path: "lib/CodeMirror-2.0/js/",
-    autoMatchParens: true
+    mode: "javascript"
   });
-  */
+  
 </script> 
 
 
