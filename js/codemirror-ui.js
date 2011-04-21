@@ -49,7 +49,7 @@ CodeMirrorUI.prototype = {
     this.self = this;
 
     mir = CodeMirror.fromTextArea(this.textarea, mirrorOptions);
-    console.log(mir);
+    //console.log(mir);
     this.mirror = mir;
 
     this.initButtons();
@@ -441,7 +441,7 @@ CodeMirrorUI.prototype = {
   },
   reindentSelection: function() {
     var cur = this.mirror.getCursor()
-    console.log(cur)
+    //console.log(cur)
     var start = this.mirror.getCursor(true)["line"]
     var end = this.mirror.getCursor(false)["line"]
     for(var line = start; line <= end; line++) {
