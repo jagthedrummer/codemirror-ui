@@ -53,3 +53,8 @@ Thanks to Marijn Haverbeke for creating and releasing [CodeMirror](http://codemi
 Without his excellent contribution to the community this project would have no reason to exist.
 
 Thanks to Mark James of famfamfam.com for his [Silk Icons](http://www.famfamfam.com/lab/icons/silk/).
+
+License
+----------------------
+
+CodeMirror UI is provided under the MIT License.  See the LICENSE file for full details.
