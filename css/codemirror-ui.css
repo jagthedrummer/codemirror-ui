@@ -42,7 +42,9 @@ input.codemirror-ui-checkbox{
 }
 
 .codemirror-ui-button.inactive{
-	background:#ccc;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	filter: alpha(opacity=50);
+	opacity: .5;
 }
 
 .codemirror-ui-wrap{
