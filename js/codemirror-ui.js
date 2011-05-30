@@ -273,7 +273,7 @@ CodeMirrorUI.prototype = {
   },
   addButton: function(name, action, image, func, frame) {
     var button = document.createElement("a");
-    button.href = "#";
+    //button.href = "#";
     button.className = "codemirror-ui-button " + action;
     button.title = name;
     button.func = func.bind(this);
