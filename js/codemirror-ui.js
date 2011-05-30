@@ -19,11 +19,6 @@ CodeMirrorUI.prototype = {
     this.textarea = textarea
     this.options = options;
     this.setDefaults(this.options, defaultOptions);
-    //We need to keep a handle on the undo and redo buttons
-    //since they will be frequently updated based on the state
-    //of the mirror.historySize() object.
-    this.undoButtons = [];
-    this.redoButtons = [];
 
     this.buttonDefs = {
       'search': ["Search/Replace", "find_replace_popup", this.options.path + "../images/silk/find.png", this.find_replace_popup],
@@ -48,6 +43,16 @@ CodeMirrorUI.prototype = {
      */
     this.self = this;
 
+    var onChange = this.editorChanged.bind(this);
+    // preserve custom onChance handler
+    if (mirrorOptions.onChange) {
+        mirrorOptions.onChange = function() {
+            mirrorOptions.onChange();
+            onChange();
+        }
+    } else {
+        mirrorOptions.onChange = onChange;
+    }
     mir = CodeMirror.fromTextArea(this.textarea, mirrorOptions);
     //console.log(mir);
     this.mirror = mir;
@@ -62,11 +67,8 @@ CodeMirrorUI.prototype = {
       this.initPopupFindControl();
     }
 
-    mirrorOptions['onChange'] = this.editorChanged.bind(this);
-
-    //now trigger the undo/redo buttons
-    this.addButtonsClass(this.undoButtons, 'inactive');
-    this.addButtonsClass(this.redoButtons, 'inactive');
+    if (this.undoButton) this.addClass(this.undoButton,'inactive');
+    if (this.redoButton) this.addClass(this.redoButton,'inactive');	
   },
   setDefaults: function(object, defaults) {
     for (var option in defaults) {
@@ -290,34 +292,25 @@ CodeMirrorUI.prototype = {
     button.appendChild(img);
     frame.appendChild(button);
     if (action == 'undo') {
-      this.undoButtons.push(button)
+      this.undoButton = button;
     }
     if (action == 'redo') {
-      this.redoButtons.push(button)
+      this.redoButton = button;
     }
   },
   classNameRegex: function(className) {
     var regex = new RegExp("(.*) *" + className + " *(.*)");
     return regex;
   },
-  addButtonsClass: function(buttons, className) {
-
-    for (var b = 0; b < buttons.length; b++) {
-      button = buttons[b];
-      if (!button.className.match(this.classNameRegex(className))) {
-        button.className += " " + className;
-      }
+  addClass: function(element, className) {
+    if (!element.className.match(this.classNameRegex(className))) {
+       element.className += " " + className;
     }
-
   },
-  removeButtonsClass: function(buttons, className) {
-    for (var b = 0; b < buttons.length; b++) {
-      button = buttons[b];
-      //console.log("testing " + button.className + " for " + className);
-      var m = button.className.match(this.classNameRegex(className))
-      if (m) {
-        button.className = m[1] + " " + m[2];
-      }
+  removeClass: function(element, className) {
+    var m = element.className.match(this.classNameRegex(className))
+    if (m) {
+      element.className = m[1] + " " + m[2];
     }
   },
   editorChanged: function() {
@@ -326,14 +319,14 @@ CodeMirrorUI.prototype = {
     }
     var his = this.mirror.historySize();
     if (his['undo'] > 0) {
-      this.removeButtonsClass(this.undoButtons, 'inactive');
+      this.removeClass(this.undoButton, 'inactive');
     } else {
-      this.addButtonsClass(this.undoButtons, 'inactive');
+      this.addClass(this.undoButton, 'inactive');
     }
     if (his['redo'] > 0) {
-      this.removeButtonsClass(this.redoButtons, 'inactive');
+      this.removeClass(this.redoButton, 'inactive');
     } else {
-      this.addButtonsClass(this.redoButtons, 'inactive');
+      this.addClass(this.redoButton, 'inactive');
     }
     //alert("undo size = " + his['undo'] + " and redo size = " + his['redo']);
   },
