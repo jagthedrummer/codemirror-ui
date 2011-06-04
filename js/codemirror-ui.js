@@ -207,6 +207,7 @@ CodeMirrorUI.prototype = {
     this.buttonFrame.appendChild(findBar);
   },
   find: function( start ) {
+    var isCaseSensitive = this.caseSensitive.checked;
     if(start == null){
       start = this.mirror.getCursor();
     }
@@ -216,17 +217,17 @@ CodeMirrorUI.prototype = {
       return;
     }
     if (this.regex.checked) {
-      findString = new RegExp(findString);
+      findString = new RegExp(findString, !isCaseSensitive ? "i" : "");
     }
 
-    this.cursor = this.mirror.getSearchCursor(findString, start, !this.caseSensitive.checked );
+    this.cursor = this.mirror.getSearchCursor(findString, start, !isCaseSensitive );
     var found = this.cursor.findNext();
     if (found) {
       this.mirror.setSelection(this.cursor.from(),this.cursor.to())
       //this.cursor.select();
     } else {
       if (confirm("No more matches.  Should we start from the top?")) {
-        this.cursor = this.mirror.getSearchCursor(findString, 0, !this.caseSensitive.checked);
+        this.cursor = this.mirror.getSearchCursor(findString, 0, !isCaseSensitive);
         found = this.cursor.findNext();
         if (found) {
           this.mirror.setSelection(this.cursor.from(),this.cursor.to())
