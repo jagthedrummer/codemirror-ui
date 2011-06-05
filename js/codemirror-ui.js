@@ -239,13 +239,23 @@ CodeMirrorUI.prototype = {
     }
   },
   replace: function() {
+  	var findString = this.findString.value,
+  	replaceString = this.replaceString.value,
+  	isCaseSensitive = this.caseSensitive.checked,
+  	isRegex = this.regex.checked,
+  	regFindString = isRegex ? new RegExp(findString, !isCaseSensitive ? "i" : "") : "";
+
     if (this.replaceAll.checked) {
-      var cursor = this.mirror.getSearchCursor(this.findString.value, 0, !this.caseSensitive.checked);
+      var cursor = this.mirror.getSearchCursor(isRegex ? regFindString : findString, 0, !isCaseSensitive);
       while (cursor.findNext())
-        this.mirror.replaceRange(this.replaceString.value,cursor.from(),cursor.to())
+        this.mirror.replaceRange(
+            isRegex ? cursor.pos.match[0].replace(regFindString, replaceString) : replaceString
+            ,cursor.from(),cursor.to());
         //cursor.replace(this.replaceString.value);
     } else {
-      this.mirror.replaceRange(this.replaceString.value,this.cursor.from(),this.cursor.to())
+      this.mirror.replaceRange(
+        isRegex ? this.cursor.pos.match[0].replace(regFindString, replaceString) : replaceString
+        ,this.cursor.from(),this.cursor.to())
       //this.cursor.replace(this.replaceString.value);
       this.find();
     }
