@@ -240,7 +240,7 @@ CodeMirrorUI.prototype = {
   },
   replace: function() {
     if (this.replaceAll.checked) {
-      var cursor = this.mirror.getSearchCursor(this.findString.value, this.mirror.getCursor(), !this.caseSensitive.checked);
+      var cursor = this.mirror.getSearchCursor(this.findString.value, 0, !this.caseSensitive.checked);
       while (cursor.findNext())
         this.mirror.replaceRange(this.replaceString.value,cursor.from(),cursor.to())
         //cursor.replace(this.replaceString.value);
