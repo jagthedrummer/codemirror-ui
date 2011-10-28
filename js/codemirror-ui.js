@@ -13,23 +13,26 @@ CodeMirrorUI.prototype = {
   initialize: function(textarea, options, mirrorOptions) {
     var defaultOptions = {
       searchMode: 'popup', // other options are 'inline' and 'dialog'.  The 'dialog' option needs work.
+      imagePath: '../images/silk',
       path: 'js',
-      buttons: ['search', 'undo', 'redo', 'jump', 'reindentSelection', 'reindent','about']
+      buttons: ['search', 'undo', 'redo', 'jump', 'reindentSelection', 'reindent','about'],
+      saveCallback: function() {},
     }
     this.textarea = textarea
     this.options = options;
     this.setDefaults(this.options, defaultOptions);
 
     this.buttonDefs = {
-      'search': ["Search/Replace", "find_replace_popup", this.options.path + "../images/silk/find.png", this.find_replace_popup],
-      'searchClose': ["Close", "find_replace_popup_close", this.options.path + "../images/silk/cancel.png", this.find_replace_popup_close],
-      'searchDialog': ["Search/Replace", "find_replace_window", this.options.path + "../images/silk/find.png", this.find_replace_window],
-      'undo': ["Undo", "undo", this.options.path + "../images/silk/arrow_undo.png", this.undo],
-      'redo': ["Redo", "redo", this.options.path + "../images/silk/arrow_redo.png", this.redo],
-      'jump': ["Jump to line #", "jump", this.options.path + "../images/silk/page_go.png", this.jump],
-      'reindentSelection': ["Reformat selection", "reindentSelect", this.options.path + "../images/silk/text_indent.png", this.reindentSelection],
-      'reindent': ["Reformat whole document", "reindent", this.options.path + "../images/silk/page_refresh.png", this.reindent],
-      'about': ["About CodeMirror-UI", "about", this.options.path + "../images/silk/help.png", this.about]
+      'save': ["Save", "save", this.options.imagePath + "/page_save.png", this.options.saveCallback],
+      'search': ["Search/Replace", "find_replace_popup", this.options.imagePath + "/find.png", this.find_replace_popup],
+      'searchClose': ["Close", "find_replace_popup_close", this.options.imagePath + "/cancel.png", this.find_replace_popup_close],
+      'searchDialog': ["Search/Replace", "find_replace_window", this.options.imagePath + "/find.png", this.find_replace_window],
+      'undo': ["Undo", "undo", this.options.imagePath + "/arrow_undo.png", this.undo],
+      'redo': ["Redo", "redo", this.options.imagePath + "/arrow_redo.png", this.redo],
+      'jump': ["Jump to line #", "jump", this.options.imagePath + "/page_go.png", this.jump],
+      'reindentSelection': ["Reformat selection", "reindentSelect", this.options.imagePath + "/text_indent.png", this.reindentSelection],
+      'reindent': ["Reformat whole document", "reindent", this.options.imagePath + "/page_refresh.png", this.reindent],
+      'about': ["About CodeMirror-UI", "about", this.options.imagePath + "/help.png", this.about]
     };
 
     //place = CodeMirror.replace(place)
@@ -67,6 +70,7 @@ CodeMirrorUI.prototype = {
       this.initPopupFindControl();
     }
 
+    if (this.saveButton) this.addClass(this.saveButton,'inactive');
     if (this.undoButton) this.addClass(this.undoButton,'inactive');
     if (this.redoButton) this.addClass(this.redoButton,'inactive');	
   },
@@ -291,6 +295,9 @@ CodeMirrorUI.prototype = {
     img.func = func.bind(this);
     button.appendChild(img);
     frame.appendChild(button);
+    if (action == 'save') {
+      this.saveButton = button;
+    }
     if (action == 'undo') {
       this.undoButton = button;
     }
@@ -319,8 +326,10 @@ CodeMirrorUI.prototype = {
     }
     var his = this.mirror.historySize();
     if (his['undo'] > 0) {
+      this.removeClass(this.saveButton, 'inactive');
       this.removeClass(this.undoButton, 'inactive');
     } else {
+      this.addClass(this.saveButton, 'inactive');
       this.addClass(this.undoButton, 'inactive');
     }
     if (his['redo'] > 0) {
