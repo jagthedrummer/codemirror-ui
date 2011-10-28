@@ -23,7 +23,7 @@ CodeMirrorUI.prototype = {
     this.setDefaults(this.options, defaultOptions);
 
     this.buttonDefs = {
-      'save': ["Save", "save", this.options.imagePath + "/page_save.png", this.options.saveCallback],
+      'save': ["Save", "save", this.options.imagePath + "/page_save.png", this.save],
       'search': ["Search/Replace", "find_replace_popup", this.options.imagePath + "/find.png", this.find_replace_popup],
       'searchClose': ["Close", "find_replace_popup_close", this.options.imagePath + "/cancel.png", this.find_replace_popup_close],
       'searchDialog': ["Search/Replace", "find_replace_window", this.options.imagePath + "/find.png", this.find_replace_window],
@@ -338,6 +338,10 @@ CodeMirrorUI.prototype = {
       this.addClass(this.redoButton, 'inactive');
     }
     //alert("undo size = " + his['undo'] + " and redo size = " + his['redo']);
+  },
+  save: function() {
+    this.options.saveCallback();
+    this.addClass(this.saveButton, 'inactive');
   },
   undo: function() {
     this.mirror.undo();
