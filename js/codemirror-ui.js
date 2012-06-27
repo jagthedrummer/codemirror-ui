@@ -238,16 +238,20 @@ CodeMirrorUI.prototype = {
     }
   },
   replace: function() {
-    if (this.replaceAll.checked) {
-      var cursor = this.mirror.getSearchCursor(this.findString.value, this.mirror.getCursor(), !this.caseSensitive.checked);
-      while (cursor.findNext())
-        this.mirror.replaceRange(this.replaceString.value,cursor.from(),cursor.to())
-        //cursor.replace(this.replaceString.value);
-    } else {
-      this.mirror.replaceRange(this.replaceString.value,this.cursor.from(),this.cursor.to())
-      //this.cursor.replace(this.replaceString.value);
-      this.find();
-    }
+    query = this.findString.value;
+    text = this.replaceString.value;
+	  if (this.replaceAll.checked) {
+	        for (var cursor = this.mirror.getSearchCursor(query); cursor.findNext();) {
+	          if (typeof query != "string") {
+	            var match = this.mirror.getRange(cursor.from(), cursor.to()).match(query);
+	            cursor.replace(text.replace(/\$(\d)/, function(w, i) {return match[i];}));
+	          } else {cursor.replace(text)};
+	        }
+	    } else {
+		    this.mirror.replaceRange(text,this.cursor.from(),this.cursor.to())
+		    //singleCursor.replace(this.replaceString.value);
+		    this.find();
+	    }
   },
   initWordWrapControl: function() {
     var wrapDiv = document.createElement("div");
