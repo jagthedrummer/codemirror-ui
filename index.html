@@ -202,7 +202,8 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 	<h2>Another example</h2>
 	
 	<p>
-		This editor is enabled with the 'inline' search widget.
+		This editor is enabled with a save button and the 'inline' search widget.  
+    You can pass a function as the 'saveCallback' option which will be called when the save button is clicked.
 	</p>
 	<p>
 		The button for the popup search widget has been removed, 
@@ -241,9 +242,10 @@ var editor = new CodeMirrorUI(textarea,uiOptions,codeMirrorOptions);	</pre>
 
 <pre class="code">
 var uiOptions = {
-	path : 'js/',
-	searchMode = 'inline',
-	buttons : ['undo','redo','jump','reindent','about']
+  path : 'js/',
+  searchMode = 'inline',
+  buttons : ['save','undo','redo','jump','reindent','about'],
+  saveCallback : function(){ alert("Some saving goes here.  Probably AJAX or something fancy."); }
 }
 </pre>
 	
@@ -324,7 +326,8 @@ var uiOptions = {
    {
   	path : 'js/',
 	  searchMode : 'inline',
-	  buttons : ['undo','redo','jump','reindent','about']
+	  buttons : ['save','undo','redo','jump','reindent','about'],
+    saveCallback : function(){ alert("Some saving goes here.  Probably AJAX or something fancy."); }
    },
    {
     mode: "javascript"
