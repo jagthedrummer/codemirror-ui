@@ -13,6 +13,11 @@ Demo
 
 [http://www.octolabs.com/javascripts/codemirror-ui/index.html](http://www.octolabs.com/javascripts/codemirror-ui/index.html)
 
+Upgrading
+-------------------
+*Note* Starting with version 0.0.17 CodeMirror-UI upgraded to CodeMirror-2.3.  The find and replace functionality relies
+on the searchcursor add-on for CodeMirror.  Make sure to add the searchcursor line from the installation instructions if 
+the search/replace is not working.
 
 Easily Configurable
 --------------------
@@ -34,6 +39,7 @@ Installation
 
     // First the CodeMirror stuff
     <script src="lib/CodeMirror-2.0/lib/codemirror.js" type="text/javascript"></script>
+    <script src="lib/CodeMirror-2.0/lib/util/searchcursor.js" type="text/javascript"></script>
     <link rel="stylesheet" href="lib/CodeMirror-2.0/lib/codemirror.css">
     <script src="lib/CodeMirror-2.0/mode/javascript/javascript.js"></script>
     <link rel="stylesheet" href="lib/CodeMirror-2.0/mode/javascript/javascript.css">
