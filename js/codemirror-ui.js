@@ -13,7 +13,7 @@ CodeMirrorUI.prototype = {
   initialize: function(textarea, options, mirrorOptions) {
     var defaultOptions = {
       searchMode: 'popup', // other options are 'inline' and 'dialog'.  The 'dialog' option needs work.
-      imagePath: '../images/silk',
+      imagePath: 'images/silk',
       path: 'js',
       buttons: ['search', 'undo', 'redo', 'jump', 'reindentSelection', 'reindent','about'],
       saveCallback: function() {},
