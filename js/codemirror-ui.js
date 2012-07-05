@@ -46,7 +46,7 @@ CodeMirrorUI.prototype = {
      */
     this.self = this;
 
-    var onChange = this.editorChanged.bind(this);
+    var onChange = this.editorChanged.cmuiBind(this);
     // preserve custom onChance handler
     if (mirrorOptions.onChange) {
         mirrorOptions.onChange = function() {
@@ -127,7 +127,7 @@ CodeMirrorUI.prototype = {
     this.findButton = document.createElement("input");
     this.findButton.type = "button";
     this.findButton.value = "Find";
-    this.findButton.onclick = function(){this.find()}.bind(this);
+    this.findButton.onclick = function(){this.find()}.cmuiBind(this);
 
     this.connect(this.findString, "keyup", function(e){ 
       var code = e.keyCode;
@@ -140,7 +140,7 @@ CodeMirrorUI.prototype = {
       }
       this.findString.focus();
       
-    }.bind(this) );
+    }.cmuiBind(this) );
 
     var regLabel = document.createElement("label");
     regLabel.title = "Regular Expressions"
@@ -167,12 +167,12 @@ CodeMirrorUI.prototype = {
       if (code == 13){
         this.replace()
       }
-    }.bind(this) );
+    }.cmuiBind(this) );
 
     this.replaceButton = document.createElement("input");
     this.replaceButton.type = "button";
     this.replaceButton.value = "Replace";
-    this.replaceButton.onclick = this.replace.bind(this);
+    this.replaceButton.onclick = this.replace.cmuiBind(this);
 
     var replaceAllLabel = document.createElement("label");
     replaceAllLabel.title = "Replace All"
@@ -275,7 +275,7 @@ CodeMirrorUI.prototype = {
     this.wordWrap.checked = true;
     label.appendChild(this.wordWrap);
     label.appendChild(document.createTextNode("Word Wrap"));
-    this.wordWrap.onchange = this.toggleWordWrap.bind(this);
+    this.wordWrap.onchange = this.toggleWordWrap.cmuiBind(this);
     wrapDiv.appendChild(label);
     this.buttonFrame.appendChild(wrapDiv);
   },
@@ -291,7 +291,7 @@ CodeMirrorUI.prototype = {
     //button.href = "#";
     button.className = "codemirror-ui-button " + action;
     button.title = name;
-    button.func = func.bind(this);
+    button.func = func.cmuiBind(this);
     button.onclick = function(event) {
       //alert(event.target);
       event.target.func();
@@ -299,11 +299,11 @@ CodeMirrorUI.prototype = {
       //this.self[action].call(this);
       //eval("this."+action)();
     }
-    .bind(this, func);
+    .cmuiBind(this, func);
     var img = document.createElement("img");
     img.src = image;
     img.border = 0;
-    img.func = func.bind(this);
+    img.func = func.cmuiBind(this);
     button.appendChild(img);
     frame.appendChild(button);
     if (action == 'save') {
@@ -494,7 +494,7 @@ CodeMirrorUI.prototype = {
 /*
  * This makes coding callbacks much more sane
  */
-Function.prototype.bind = function(scope) {
+Function.prototype.cmuiBind = function(scope) {
   var _function = this;
 
   return function() {
