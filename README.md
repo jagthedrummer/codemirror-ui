@@ -38,11 +38,11 @@ Installation
 --------------------
 
     // First the CodeMirror stuff
-    <script src="lib/CodeMirror-2.0/lib/codemirror.js" type="text/javascript"></script>
-    <script src="lib/CodeMirror-2.0/lib/util/searchcursor.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="lib/CodeMirror-2.0/lib/codemirror.css">
-    <script src="lib/CodeMirror-2.0/mode/javascript/javascript.js"></script>
-    <link rel="stylesheet" href="lib/CodeMirror-2.0/mode/javascript/javascript.css">
+    <script src="lib/CodeMirror-2.3/lib/codemirror.js" type="text/javascript"></script>
+    <script src="lib/CodeMirror-2.3/lib/util/searchcursor.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="lib/CodeMirror-2.3/lib/codemirror.css">
+    <script src="lib/CodeMirror-2.3/mode/javascript/javascript.js"></script>
+    <link rel="stylesheet" href="lib/CodeMirror-2.3/mode/javascript/javascript.css">
     
     //Then the CodeMirrorUI stuff
     <script src="js/codemirror-ui.js" type="text/javascript"></script>
