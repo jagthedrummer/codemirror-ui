@@ -295,7 +295,15 @@ CodeMirrorUI.prototype = {
     button.func = func.cmuiBind(this);
     button.onclick = function(event) {
       //alert(event.target);
-      event.target.func();
+      
+      //normalize for IE
+      event = event ? event : window.event;
+      if (typeof event.target == 'undefined') {
+        var target = event.srcElement;
+      } else {
+      	var target = event.target;
+      }
+      target.func();
       return false;
       //this.self[action].call(this);
       //eval("this."+action)();
