@@ -23,6 +23,7 @@ CodeMirrorUI.prototype = {
     this.setDefaults(this.options, defaultOptions);
 
     this.buttonDefs = {
+      // codemirror-ui
       'save': ["Save", "save", this.options.imagePath + "/page_save.png", this.save],
       'search': ["Search/Replace", "find_replace_popup", this.options.imagePath + "/find.png", this.find_replace_popup],
       'searchClose': ["Close", "find_replace_popup_close", this.options.imagePath + "/cancel.png", this.find_replace_popup_close],
@@ -32,7 +33,11 @@ CodeMirrorUI.prototype = {
       'jump': ["Jump to line #", "jump", this.options.imagePath + "/page_go.png", this.jump],
       'reindentSelection': ["Reformat selection", "reindentSelect", this.options.imagePath + "/text_indent.png", this.reindentSelection],
       'reindent': ["Reformat whole document", "reindent", this.options.imagePath + "/page_refresh.png", this.reindent],
-      'about': ["About CodeMirror-UI", "about", this.options.imagePath + "/help.png", this.about]
+      'about': ["About CodeMirror-UI", "about", this.options.imagePath + "/help.png", this.about],
+
+      // html
+      'bold': ["Bold", "bold", this.options.imagePath + "/text_bold.png", [ this.addTag, "<strong>", "</strong>"]],
+      'h1': ["Heading 1", "h1", this.options.imagePath + "/text_heading_1.png", [ this.addTag, "<h1>", "</h1>"]]
     };
 
     //place = CodeMirror.replace(place)
@@ -72,7 +77,7 @@ CodeMirrorUI.prototype = {
 
     if (this.saveButton) this.addClass(this.saveButton,'inactive');
     if (this.undoButton) this.addClass(this.undoButton,'inactive');
-    if (this.redoButton) this.addClass(this.redoButton,'inactive');	
+    if (this.redoButton) this.addClass(this.redoButton,'inactive'); 
   },
   setDefaults: function(object, defaults) {
     for (var option in defaults) {
@@ -85,13 +90,24 @@ CodeMirrorUI.prototype = {
     this.mirror.toTextArea();
   },
   initButtons: function() {
-    this.buttonFrame = document.createElement("div");
-    this.buttonFrame.className = "codemirror-ui-clearfix codemirror-ui-button-frame";
-    this.home.appendChild(this.buttonFrame);
-    for (var i = 0; i < this.options.buttons.length; i++) {
-      var buttonId = this.options.buttons[i];
-      var buttonDef = this.buttonDefs[buttonId];
-      this.addButton(buttonDef[0], buttonDef[1], buttonDef[2], buttonDef[3], this.buttonFrame);
+    // back-compat: turn one-dimensional array into bi-dimension, with only one row of buttons
+    var btns = this.options.buttons ;
+    if (btns.length && typeof btns[0] == 'string') {
+      this.options.buttons = [ btns ] ;
+    }
+
+    for (var l=0 ; l<this.options.buttons.length ; l++) {
+      this.buttonFrame = document.createElement("div");
+      this.buttonFrame.className = "codemirror-ui-clearfix codemirror-ui-button-frame";
+      this.home.appendChild(this.buttonFrame);
+
+      var btn_line = this.options.buttons[l] ;
+      for (var i=0 ; i<btn_line.length ; i++) {
+        var buttonId = btn_line[i];
+        var buttonDef = this.buttonDefs[buttonId];
+
+        this.addButton(buttonDef[0], buttonDef[1], buttonDef[2], buttonDef[3], this.buttonFrame);
+      }
     }
 
     //this.makeButton("Search", "search");
@@ -243,11 +259,11 @@ CodeMirrorUI.prototype = {
     }
   },
   replace: function() {
-  	var findString = this.findString.value,
-  	replaceString = this.replaceString.value,
-  	isCaseSensitive = this.caseSensitive.checked,
-  	isRegex = this.regex.checked,
-  	regFindString = isRegex ? new RegExp(findString, !isCaseSensitive ? "i" : "") : "";
+    var findString = this.findString.value,
+    replaceString = this.replaceString.value,
+    isCaseSensitive = this.caseSensitive.checked,
+    isRegex = this.regex.checked,
+    regFindString = isRegex ? new RegExp(findString, !isCaseSensitive ? "i" : "") : "";
 
     if (this.replaceAll.checked) {
       var cursor = this.mirror.getSearchCursor(isRegex ? regFindString : findString, 0, !isCaseSensitive);
@@ -291,10 +307,15 @@ CodeMirrorUI.prototype = {
     //button.href = "#";
     button.className = "codemirror-ui-button " + action;
     button.title = name;
-    button.func = func.cmuiBind(this);
+    // if the function has arguments, here comes an array
+    button.func = (typeof func == 'object') ? 
+      button.func = func[0].cmuiBind(this) : func.cmuiBind(this) ;
     button.onclick = function(event) {
       //alert(event.target);
-      event.target.func();
+      if (typeof func == 'object')
+        event.target.func(func[1], func[2]);
+      else
+        event.target.func();
       return false;
       //this.self[action].call(this);
       //eval("this."+action)();
@@ -303,7 +324,10 @@ CodeMirrorUI.prototype = {
     var img = document.createElement("img");
     img.src = image;
     img.border = 0;
-    img.func = func.cmuiBind(this);
+    if (typeof func == 'object')
+      img.func = func[0].cmuiBind(this);
+    else
+      img.func = func.cmuiBind(this);
     button.appendChild(img);
     frame.appendChild(button);
     if (action == 'save') {
@@ -321,11 +345,13 @@ CodeMirrorUI.prototype = {
     return regex;
   },
   addClass: function(element, className) {
+    if (!element) return ;
     if (!element.className.match(this.classNameRegex(className))) {
        element.className += " " + className;
     }
   },
   removeClass: function(element, className) {
+    if (!element) return ;
     var m = element.className.match(this.classNameRegex(className))
     if (m) {
       element.className = m[1] + " " + m[2];
@@ -466,6 +492,11 @@ CodeMirrorUI.prototype = {
     }
     //this.mirror.reindentSelection();
 
+  },
+  addTag: function(startTag, endTag) {
+    var old = this.mirror.getSelection() ;
+    var str = startTag + old + endTag ;
+    this.mirror.replaceSelection (str) ;
   },
   // Event handler registration. If disconnect is true, it'll return a
   // function that unregisters the handler.
