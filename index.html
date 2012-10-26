@@ -321,12 +321,17 @@ var uiOptions = {
 
   var textarea2 = document.getElementById('code2');
   //CodeMirror.replace(textarea);
+
+	var buttons = [
+	  ['search', 'undo', 'redo', 'jump', 'reindentSelection', 'reindent','about'],
+	  ['bold', 'h1']
+	] ;
   
   var editor2 = new CodeMirrorUI(textarea2,
    {
   	path : 'js/',
 	  searchMode : 'inline',
-	  buttons : ['save','undo','redo','jump','reindent','about'],
+	  buttons : buttons,
     saveCallback : function(){ alert("Some saving goes here.  Probably AJAX or something fancy."); }
    },
    {
