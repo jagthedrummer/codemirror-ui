@@ -335,9 +335,11 @@ CodeMirrorUI.prototype = {
     }
   },
   removeClass: function(element, className) {
-    var m = element.className.match(this.classNameRegex(className))
-    if (m) {
-      element.className = m[1] + " " + m[2];
+    if (element && element.className) {
+      var m = element.className.match(this.classNameRegex(className))
+      if (m) {
+        element.className = m[1] + " " + m[2];
+      }
     }
   },
   editorChanged: function() {
