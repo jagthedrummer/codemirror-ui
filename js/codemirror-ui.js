@@ -363,6 +363,9 @@ CodeMirrorUI.prototype = {
     this.options.saveCallback();
     this.addClass(this.saveButton, 'inactive');
   },
+  getValue: function() {
+	return this.mirror.getValue();  
+  },
   undo: function() {
     this.mirror.undo();
   },
