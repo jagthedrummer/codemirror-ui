@@ -47,10 +47,11 @@ CodeMirrorUI.prototype = {
     this.self = this;
 
     var onChange = this.editorChanged.cmuiBind(this);
-    // preserve custom onChance handler
+    // preserve custom onChange handler
     if (mirrorOptions.onChange) {
+        mirrorOptions.oldOnChange = mirrorOptions.onChange;
         mirrorOptions.onChange = function() {
-            mirrorOptions.onChange();
+            mirrorOptions.oldOnChange();
             onChange();
         }
     } else {
