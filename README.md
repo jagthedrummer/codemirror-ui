@@ -8,6 +8,8 @@ CodeMirrorUI is a wrapper that adds interface functionality for many functions t
 Functionality includes undo, redo, jump to line, reindent selection, and reindent entire document. 
 Two options for find/replace are also available.  It is based on the MirrorFrame example that Marijn included with CodeMirror.
 
+[![Code Climate](https://codeclimate.com/repos/52f67c9d695680748c002493/badges/d52fc7dbf6d0943c61ea/gpa.png)](https://codeclimate.com/repos/52f67c9d695680748c002493/feed)
+
 Demo
 -------------------
 
