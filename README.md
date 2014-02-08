@@ -11,7 +11,7 @@ Two options for find/replace are also available.  It is based on the MirrorFrame
 Demo
 -------------------
 
-[http://jagthedrummer.github.io/codemiddor-ui/](http://jagthedrummer.github.io/codemiddor-ui/)
+[http://jagthedrummer.github.io/codemirror-ui/](http://jagthedrummer.github.io/codemirror-ui/)
 
 Upgrading
 -------------------
