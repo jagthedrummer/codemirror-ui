@@ -15,7 +15,7 @@ CodeMirrorUI.prototype = {
       searchMode: 'popup', // other options are 'inline' and 'dialog'.  The 'dialog' option needs work.
       imagePath: 'images/silk',
       path: 'js',
-      buttons: ['search', 'undo', 'redo', 'jump', 'reindentSelection', 'reindent','about'],
+      buttons: ['init', 'search', 'undo', 'redo', 'jump', 'reindentSelection', 'reindent', 'fullScreen','about'],
       saveCallback: function() {},
     }
     this.textarea = textarea
@@ -23,6 +23,7 @@ CodeMirrorUI.prototype = {
     this.setDefaults(this.options, defaultOptions);
 
     this.buttonDefs = {
+      'init': ["Init", "init", this.options.imagePath + "/new.png", this.init],
       'save': ["Save", "save", this.options.imagePath + "/page_save.png", this.save],
       'search': ["Search/Replace", "find_replace_popup", this.options.imagePath + "/find.png", this.find_replace_popup],
       'searchClose': ["Close", "find_replace_popup_close", this.options.imagePath + "/cancel.png", this.find_replace_popup_close],
@@ -32,6 +33,7 @@ CodeMirrorUI.prototype = {
       'jump': ["Jump to line #", "jump", this.options.imagePath + "/page_go.png", this.jump],
       'reindentSelection': ["Reformat selection", "reindentSelect", this.options.imagePath + "/text_indent.png", this.reindentSelection],
       'reindent': ["Reformat whole document", "reindent", this.options.imagePath + "/page_refresh.png", this.reindent],
+      'fullScreen': ["FullScreen", "fullScreen", this.options.imagePath + "/shape_move_forwards.png", this.fullScreen],
       'about': ["About CodeMirror-UI", "about", this.options.imagePath + "/help.png", this.about]
     };
 
@@ -47,10 +49,11 @@ CodeMirrorUI.prototype = {
     this.self = this;
 
     var onChange = this.editorChanged.cmuiBind(this);
-    // preserve custom onChance handler
+    // preserve custom onChange handler
     if (mirrorOptions.onChange) {
+        mirrorOptions.oldOnChange = mirrorOptions.onChange;
         mirrorOptions.onChange = function() {
-            mirrorOptions.onChange();
+            mirrorOptions.oldOnChange();
             onChange();
         }
     } else {
@@ -70,9 +73,10 @@ CodeMirrorUI.prototype = {
       this.initPopupFindControl();
     }
 
+    if (this.initButton) this.addClass(this.initButton,'inactive');
     if (this.saveButton) this.addClass(this.saveButton,'inactive');
     if (this.undoButton) this.addClass(this.undoButton,'inactive');
-    if (this.redoButton) this.addClass(this.redoButton,'inactive');	
+    if (this.redoButton) this.addClass(this.redoButton,'inactive');
   },
   setDefaults: function(object, defaults) {
     for (var option in defaults) {
@@ -129,17 +133,17 @@ CodeMirrorUI.prototype = {
     this.findButton.value = "Find";
     this.findButton.onclick = function(){this.find()}.cmuiBind(this);
 
-    this.connect(this.findString, "keyup", function(e){ 
+    this.connect(this.findString, "keyup", function(e){
       var code = e.keyCode;
       if (code == 13){
-        this.find(this.mirror.getCursor(false)) 
+        this.find(this.mirror.getCursor(false))
       }else{
         if(!this.findString.value == ""){
           this.find(this.mirror.getCursor(true))
-        } 
+        }
       }
       this.findString.focus();
-      
+
     }.cmuiBind(this) );
 
     var regLabel = document.createElement("label");
@@ -162,7 +166,7 @@ CodeMirrorUI.prototype = {
     this.replaceString.type = "text";
     this.replaceString.size = 8;
 
-    this.connect(this.replaceString, "keyup", function(e){ 
+    this.connect(this.replaceString, "keyup", function(e){
       var code = e.keyCode;
       if (code == 13){
         this.replace()
@@ -294,7 +298,15 @@ CodeMirrorUI.prototype = {
     button.func = func.cmuiBind(this);
     button.onclick = function(event) {
       //alert(event.target);
-      event.target.func();
+
+      //normalize for IE
+      event = event ? event : window.event;
+      if (typeof event.target == 'undefined') {
+        var target = event.srcElement;
+      } else {
+      	var target = event.target;
+      }
+      target.func();
       return false;
       //this.self[action].call(this);
       //eval("this."+action)();
@@ -306,6 +318,9 @@ CodeMirrorUI.prototype = {
     img.func = func.cmuiBind(this);
     button.appendChild(img);
     frame.appendChild(button);
+    if (action == 'init') {
+      this.initButton = button;
+    }
     if (action == 'save') {
       this.saveButton = button;
     }
@@ -326,9 +341,11 @@ CodeMirrorUI.prototype = {
     }
   },
   removeClass: function(element, className) {
-    var m = element.className.match(this.classNameRegex(className))
-    if (m) {
-      element.className = m[1] + " " + m[2];
+    if (element && element.className) {
+      var m = element.className.match(this.classNameRegex(className))
+      if (m) {
+        element.className = m[1] + " " + m[2];
+      }
     }
   },
   editorChanged: function() {
@@ -350,9 +367,15 @@ CodeMirrorUI.prototype = {
     }
     //alert("undo size = " + his['undo'] + " and redo size = " + his['redo']);
   },
+  init: function() {
+    return this.mirror.setValue("");
+  },
   save: function() {
     this.options.saveCallback();
     this.addClass(this.saveButton, 'inactive');
+  },
+  getValue: function() {
+	return this.mirror.getValue();
   },
   undo: function() {
     this.mirror.undo();
@@ -448,6 +471,46 @@ CodeMirrorUI.prototype = {
     var lineCount = this.mirror.lineCount();
     for(var line = 0; line < lineCount; line++) {
       this.mirror.indentLine(line);
+    }
+  },
+  fullScreen: function() {
+    var editor = this.textarea.nextSibling;
+    var toolbar = this.home;
+    var scrollbar = editor.childNodes[2];
+
+    var resize = function() {
+      toolbar.style.width = '100%';
+      editor.style.width = '100%';
+      editor.style.height = '100%';
+      scrollbar.style.height = '100%';
+    };
+
+    var translate = function() {
+      toolbar.style.position = 'fixed';
+      toolbar.style.top = 0;
+      toolbar.style.left = 0;
+      editor.style.position = 'fixed';
+      editor.style.top = toolbar.clientHeight + 'px';
+      editor.style.left = '0px';
+    };
+
+    function removeStyles(el) {
+      el.removeAttribute('style');
+    }
+
+    var isFullScreen = toolbar.className.indexOf("fullscreen");
+    if(isFullScreen === -1) {
+      toolbar.className += ' fullscreen';
+      translate();
+      resize();
+      document.body.style.overflow = "hidden";
+    }
+    else {
+      toolbar.className = toolbar.className.replace(/ fullscreen/, "");
+      removeStyles(editor);
+      removeStyles(toolbar);
+      removeStyles(scrollbar);
+      document.body.style.overflow = "visible";
     }
   },
   about : function() {
